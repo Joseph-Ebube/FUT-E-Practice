@@ -3,7 +3,7 @@ import { engine } from './core/engine.js';
 import { Router } from './app/router.js';
 import { ResultView } from './ui/result.js';
 import { LandingView } from './ui/landing.js';
-import { CourseInfoView } from './ui/courseInfo.js';
+import { CourseInfoView } from './ui/courseinfo.js';
 import { ExamView } from './ui/exam.js';
 import { Calculator } from './ui/components/calculator.js';
 

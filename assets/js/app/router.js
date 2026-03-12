@@ -1,5 +1,5 @@
 import { LandingView } from '../ui/landing.js';
-import { CourseInfoView } from '../ui/courseInfo.js'; // Ensure this is imported
+import { CourseInfoView } from '../ui/courseinfo.js'; // Ensure this is imported
 import { ExamView } from '../ui/exam.js';
 import { ResultView } from '../ui/result.js';
 import { state } from '../core/state.js';
