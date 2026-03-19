@@ -17,7 +17,15 @@ export const state = {
         this.flaggedQuestions.clear();
         this.saveToDisk();
     },
-    
+    // inside core/state.js
+    toggleFlag(index) {
+        if (this.flaggedQuestions.has(index)) {
+            this.flaggedQuestions.delete(index);
+        } else {
+            this.flaggedQuestions.add(index);
+    }
+    this.saveToDisk(); // Persist the bookmark if they refresh
+    } ,
     saveAnswer(questionId, answerIndex) {
         this.userAnswers[questionId] = answerIndex;
         this.saveToDisk();

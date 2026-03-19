@@ -11,6 +11,53 @@ import { Calculator } from './ui/components/calculator.js';
 window.state = state;
 window.ResultView = ResultView;
 
+
+
+// main.js
+
+// Define the renderer globally
+window.renderMath = function() {
+    const target = document.getElementById('main-layout');
+    if (!target || !window.renderMathInElement) return;
+
+    // requestAnimationFrame ensures the DOM has updated before we scan it
+    requestAnimationFrame(() => {
+        window.renderMathInElement(target, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });
+    });
+};
+
+// ... inside your navigation actions ...
+window.nextQuestion = () => {
+    engine.nextQuestion();
+    window.renderMath(); // Trigger scan after content change
+};
+
+window.prevQuestion = () => {
+    engine.prevQuestion();
+    window.renderMath();
+};
+
+window.goToQuestion = (idx) => {
+    ExamView.handleGoTo(idx);
+    window.renderMath();
+};
+
+// 2. Wrap the Router's render function to include KaTeX
+const originalRender = Router.renderCurrent;
+Router.renderCurrent = function() {
+    if (originalRender) originalRender.apply(this);
+    window.renderMath(); // Trigger KaTeX after view change
+};
+
+// ... rest of your existing window.nextQuestion / window.prevQuestion logic
 // Global Actions
 window.setResultTab = (tab) => { ResultView.activeTab = tab; ResultView.render(); };
 window.goToReviewQuestion = (idx) => { state.currentIndex = idx; ResultView.render(); };
@@ -21,10 +68,13 @@ window.startExam = () => {
 };
 window.navigateHome = () => { state.clearDisk(); Router.navigate('landing'); };
 window.selectOption = (idx) => ExamView.handleSelectOption(idx);
+window.toggleFlag = ()=> ExamView.handleGoTo(idx);
+// Add this to your main.js global actions
 window.toggleFlag = () => ExamView.handleToggleFlag();
-window.goToQuestion = (idx) => ExamView.handleGoTo(idx);
-window.nextQuestion = () => engine.nextQuestion();
-window.prevQuestion = () => engine.prevQuestion();
+window.goToQuestion = (idx) => {
+    ExamView.handleGoTo(idx);
+    renderMath();
+};
 window.submitExam = () => engine.submitExam();
 window.toggleCalc = () => Calculator.toggle();
 window.calcInput = (val) => Calculator.handleInput(val);

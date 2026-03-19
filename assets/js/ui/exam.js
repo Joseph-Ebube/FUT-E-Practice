@@ -141,7 +141,9 @@ export const ExamView = {
                 </main>
             </div>
         `;
+        if (window.renderMath) window.renderMath();
     },
+
 
     handleSelectOption(idx) {
         state.saveAnswer(state.currentIndex, idx);
